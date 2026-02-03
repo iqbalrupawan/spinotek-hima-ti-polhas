@@ -25,6 +25,68 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    position: relative;
+    /* For absolute positioning of nav */
+}
+
+/* Branding Nav Styles (Tailwind Emulation) */
+.project-nav-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.project-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* gap-2 */
+    padding: 0.5rem 1rem;
+    /* px-4 py-2 */
+    background-color: rgb(255, 255, 255);
+    /* Adapted for Dark Mode visibility */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* border-slate-200 equivalentish */
+    border-radius: 9999px;
+    /* rounded-full */
+    backdrop-filter: blur(4px);
+    /* backdrop-blur-sm */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* shadow-sm */
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.project-nav-link:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* hover:shadow-md */
+    background-color: rgb(255, 255, 255);
+}
+
+.nav-logo {
+    opacity: 0.8;
+    /* opacity-80 */
+    transition: opacity 0.3s;
+}
+
+.project-nav-link:hover .nav-logo {
+    opacity: 1;
+    /* group-hover:opacity-100 */
+}
+
+.nav-logo.h-5 {
+    height: 1.25rem;
+}
+
+.nav-logo.h-6 {
+    height: 1.5rem;
+}
+
+.nav-separator {
+    color: #cbd5e1;
+    /* text-slate-300 */
+    margin: 0 2px;
 }
 
 .game-container {
