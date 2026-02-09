@@ -93,6 +93,17 @@ window.Store = {
             return null;
         }
         load();
+
+        // Bind visibility change to auto-validate
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                window.Store.validateState();
+            }
+        });
+
+        // Validate immediately on init just in case
+        this.validateState();
+
         return state;
     },
 
@@ -114,6 +125,13 @@ window.Store = {
     },
 
     triggerStabilizer() {
+        // Validate state first to prevent wasted gold
+        this.validateState();
+        if (state.character.status !== window.RPG.CHARACTER_STATUS.FAINTED) {
+            addLog(`SYSTEM: Stabilizer aborted. Neural patterns already normalized.`, 'system');
+            return;
+        }
+
         const { useNeuralStabilizer } = window.RPG;
         const result = useNeuralStabilizer(state.character);
 
@@ -128,6 +146,7 @@ window.Store = {
     },
 
     purchaseUpgrade(type) {
+        this.validateState(); // Ensure stats are fresh
         const { purchaseUpgrade } = window.RPG;
         const result = purchaseUpgrade(state.character, type);
 
@@ -139,6 +158,26 @@ window.Store = {
             addLog(`SYSTEM: Upgrade Error: ${result.reason}`, 'failure');
             notify();
         }
+    },
+
+    /**
+     * Centralized State Validation
+     * Checks time-based recovery and ensures consistency.
+     */
+    validateState() {
+        if (!state || !state.character) return false;
+
+        const { checkStatusRecovery } = window.RPG;
+        const oldChar = state.character;
+        const newChar = checkStatusRecovery(oldChar);
+
+        if (newChar !== oldChar) {
+            state.character = newChar;
+            addLog('SYSTEM: Temporal synchronization complete. Biological functions restored.', 'system');
+            save();
+            return true;
+        }
+        return false;
     },
 
     addLogEntry(message, type = 'system') {
