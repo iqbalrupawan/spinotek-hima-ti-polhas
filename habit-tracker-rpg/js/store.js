@@ -28,7 +28,8 @@ function getInitialState() {
             flags: {
                 hasFainted: false,
                 hasUpgraded: false,
-                faintCount: 0
+                faintCount: 0,
+                lastActionTimestamp: 0
             }
         },
         habits: [
